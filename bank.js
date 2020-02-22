@@ -30,31 +30,32 @@ function Account(acctName, acctBalance, type)
 
 	// The account type
 	this.type = type;
+}
+
+// PROTOTYPE FUNCTIONS FOR ACCOUNT OBJECT
+// Returns the account name
+Account.prototype.getAcctName = function() { return this.acctName; }
 	
-	// Returns the account name
-	this.getAcctName = function() { return this.acctName; }
-	
-	// Returns the account balance
-	this.getBalance = function() { return this.acctBalance; }
-	
-	// Returns the account type
-	this.getAccountType = function() { return this.type; }
-	
-	// Deposits money to the account
-	// @param amount - the amount to deposit
-	this.deposit = function(amount) { this.acctBalance  = this.acctBalance +  amount; }
-	
-	// Withdraws money from the account
-	// @param amount - the amount to withdraw
-	this.withdraw = function(amount){ this.acctBalance = this.acctBalance - amount; }
-	
-	// Prints the account information
-	this.printAcct = function()
-	{
-		console.log("Account name: ", this.getAcctName());
-		console.log("Account type: ", this.getAccountType());
-		console.log("Account balance: ", this.getBalance(), "\n");
-	}
+// Returns the account balance
+Account.prototype.getBalance = function() { return this.acctBalance; }
+
+// Returns the account type
+Account.prototype.getAccountType = function() { return this.type; }
+
+// Deposits money to the account
+// @param amount - the amount to deposit
+Account.prototype.deposit = function(amount) { this.acctBalance  = this.acctBalance +  amount; }
+
+// Withdraws money from the account
+// @param amount - the amount to withdraw
+Account.prototype.withdraw = function(amount){ this.acctBalance = this.acctBalance - amount; }
+
+// Prints the account information
+Account.prototype.printAcct = function()
+{
+	console.log("Account name: ", this.getAcctName());
+	console.log("Account type: ", this.getAccountType());
+	console.log("Account balance: ", this.getBalance(), "\n");
 }
 
 // ------------------------------------------------
