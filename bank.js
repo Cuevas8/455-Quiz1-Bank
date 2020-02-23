@@ -68,28 +68,29 @@ function Customer(userName, userPassword)
 	// Save the user name and password
 	this.userName = userName;
 	this.userPassword = userPassword;
-	
-	// Returns the username
-	this.getUserName = function() { return this.userName; }
-	
-	// Returns the password
-	this.getPassword = function() { return this.userPassword; }
-	
-	// Returns the accounts
-	this.getAccounts = function() { return this.accounts; }
-	
-	// Add account
-	// @param account - the account
-	this.addAccount = function(account) { this.accounts.push(account); }
-	
-	// Returns the account based on the account index
-	// @param acctIndex - the account index
-	// @return - the account based on the index	
-	this.getAccount = function(acctIndex) { return this.accounts[acctIndex]; }
 		
 	// The list of accounts	
 	this.accounts = []	
 }
+
+// PROTOTYPE FUNCTIONS FOR CUSTOMER OBJECT
+// Returns the username
+Customer.prototype.getUserName = function() { return this.userName; }
+
+// Returns the password
+Customer.prototype.getPassword = function() { return this.userPassword; }
+
+// Returns the accounts
+Customer.prototype.getAccounts = function() { return this.accounts; }
+
+// Add account
+// @param account - the account
+Customer.prototype.addAccount = function(account) { this.accounts.push(account); }
+
+// Returns the account based on the account index
+// @param acctIndex - the account index
+// @return - the account based on the index	
+Customer.prototype.getAccount = function(acctIndex) { return this.accounts[acctIndex]; }
 
 // ----------------------------------------------
 // The constructor of the Bank class
