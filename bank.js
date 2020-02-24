@@ -445,7 +445,7 @@ Bank.prototype.withdrawUI = function(customer)
 
 	while(isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
 		console.log("Please enter valid withdraw amount.");
-		depositAmount = readline.question("Please enter the withdraw amount: ");
+		withdrawAmount = readline.question("Please enter the withdraw amount: ");
 	}
 
 	
