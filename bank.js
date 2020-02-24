@@ -50,7 +50,7 @@ Account.prototype.deposit = function(amount) {this.acctBalance  = parseFloat( pa
 // Withdraws money from the account
 // @param amount - the amount to withdraw
 
-Account.prototype.withdraw = function(amount){ this.acctBalance = this.acctBalance - amount; }
+Account.prototype.withdraw = function(amount){ this.acctBalance  = parseFloat( parseFloat(this.acctBalance) -  parseFloat(amount)).toFixed(2); } //CHECK OVER HERE. Kinda sloppy
 
 // Prints the account information
 Account.prototype.printAcct = function()
@@ -432,11 +432,22 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the account choice
 	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	
+	while(isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
+		console.log("Please input a valid account number");
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	}
+
 	// Get the account based on index
 	var account = customer.getAccount(accountIndex - 1);	
 	
 	// Get the withdraw amount
 	var withdrawAmount = readline.question("Please enter the withraw amount: ");
+
+	while(isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
+		console.log("Please enter valid withdraw amount.");
+		depositAmount = readline.question("Please enter the withdraw amount: ");
+	}
+
 	
 	// Deposit the money	
 	account.withdraw(withdrawAmount);			
