@@ -44,10 +44,12 @@ Account.prototype.getAccountType = function() { return this.type; }
 
 // Deposits money to the account
 // @param amount - the amount to deposit
-Account.prototype.deposit = function(amount) { this.acctBalance  = this.acctBalance +  amount; }
+Account.prototype.deposit = function(amount) {this.acctBalance  = parseFloat( parseFloat(this.acctBalance) +  parseFloat(amount)).toFixed(2); } //CHECK OVER HERE. Kinda sloppy
+	
 
 // Withdraws money from the account
 // @param amount - the amount to withdraw
+
 Account.prototype.withdraw = function(amount){ this.acctBalance = this.acctBalance - amount; }
 
 // Prints the account information
@@ -90,7 +92,8 @@ Customer.prototype.addAccount = function(account) { this.accounts.push(account);
 // Returns the account based on the account index
 // @param acctIndex - the account index
 // @return - the account based on the index	
-Customer.prototype.getAccount = function(acctIndex) { return this.accounts[acctIndex]; }
+Customer.prototype.getAccount = function(acctIndex) { return this.accounts[acctIndex] ;	
+}
 
 // ----------------------------------------------
 // The constructor of the Bank class
@@ -389,14 +392,27 @@ Bank.prototype.depositUI = function(user)
 	this.viewAccounts(user);
 	
 	// Get the account choice
-	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
 	
+	while(isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (user.accounts.length)) { //CHANGE OVER HERE
+		console.log("Please input a valid account number");
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	}
+
 	// Get the account based on index
-	var account = user.getAccount(accountIndex - 1);	
+	var account = user.getAccount(accountIndex - 1);
+	
 	
 	// Get the deposit amount
 	var depositAmount = readline.question("Please enter the deposit amount: ");
+
 	
+
+	while(isNaN(parseFloat(depositAmount)) || parseFloat(depositAmount) <= 0) { //CHANGE OVER HERE
+		console.log("Please enter valid deposit amount.");
+		depositAmount = readline.question("Please enter the deposit amount: ");
+	}
+
 	// Deposit the money	
 	account.deposit(depositAmount);			
 	
