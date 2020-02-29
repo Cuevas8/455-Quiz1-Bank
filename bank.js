@@ -394,7 +394,7 @@ Bank.prototype.depositUI = function(user)
 	// Get the account choice
 	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
 	
-	while(isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (user.accounts.length)) { //CHANGE OVER HERE
+	while(accountIndex.match(/[a-z]/i) ||isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (user.accounts.length)) { //CHANGE OVER HERE
 		console.log("Please input a valid account number");
 		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	}
@@ -406,9 +406,8 @@ Bank.prototype.depositUI = function(user)
 	// Get the deposit amount
 	var depositAmount = readline.question("Please enter the deposit amount: ");
 
-	
 
-	while(isNaN(parseFloat(depositAmount)) || parseFloat(depositAmount) <= 0) { //CHANGE OVER HERE
+	while( depositAmount.match(/[a-z]/i) || isNaN(parseFloat(depositAmount)) || parseFloat(depositAmount) <= 0) { //CHANGE OVER HERE
 		console.log("Please enter valid deposit amount.");
 		depositAmount = readline.question("Please enter the deposit amount: ");
 	}
@@ -432,7 +431,7 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the account choice
 	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	
-	while(isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
+	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
 		console.log("Please input a valid account number");
 		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	}
@@ -443,7 +442,7 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the withdraw amount
 	var withdrawAmount = readline.question("Please enter the withraw amount: ");
 
-	while(isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
+	while(withdrawAmount.match(/[a-z]/i) || isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
 		console.log("Please enter valid withdraw amount.");
 		withdrawAmount = readline.question("Please enter the withdraw amount: ");
 	}
@@ -471,6 +470,11 @@ Bank.prototype.transferUI = function(customer)
 		
 	// Get the source account
 	var accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
+
+	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
+		console.log("Please input a valid account number");
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	}
 	
 	// Get the destination account based on index
 	var srcAccount = customer.getAccount(accountIndex - 1);
@@ -483,6 +487,11 @@ Bank.prototype.transferUI = function(customer)
 	
 	// Get the transfer amount
 	var transferAmount = readline.question("Please enter the transfer amount: ");
+
+	while(transferAmount.match(/[a-z]/i) || isNaN(parseFloat(transferAmount)) || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
+		console.log("Please enter valid withdraw amount.");
+		transferAmount = readline.question("Please enter the withdraw amount: ");
+	}
 	
 	// Withdraw the money from the source account
 	srcAccount.withdraw(transferAmount);
