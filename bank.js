@@ -23,10 +23,10 @@ function Account(acctName, acctBalance, type)
 	this.acctName = acctName;
 	
 	// The account amount
-	this.acctBalance = acctBalance;
+	this.acctBalance = parseFloat(acctBalance).toFixed(2);
 		
 	// The 1 percent interest rate - because our bank is the best!	
-	this.interestRate = 1;
+	this.interestRate = parseFloat(1).toFixed(2);
 
 	// The account type
 	this.type = type;
@@ -377,6 +377,41 @@ Bank.prototype.openAccountUI = function(customer)
 	
 	// The account name
 	this.createAccount(customer, accountName, parseFloat(initialDeposit), accountType);
+}
+Bank.prototype.closeAccount = function(customer) 
+{
+	this.viewAccounts(customer);
+	if (customer.accounts.length <= 1) {
+		console.log("*****WARNING: you can't transfer funds if you delete your single account.*****");
+	}
+
+	// Get the account choice to close
+	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
+	
+	while(accountIndex.match(/[a-z]/i) ||isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
+		console.log("Please input a valid account number");
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	}
+
+	// Get the account based on index
+	var account = customer.getAccount(accountIndex - 1);
+
+
+	if(customer.accounts.length > 1) {
+		// Get the destination account
+	accountIndex2 = readline.question("Please select which account to transfer the remaining funds (e.g., enter 1 for the first account) ");
+	
+	// Get the destination account based on index
+	var dstAccount = customer.getAccount(accountIndex2 - 1);	
+	
+	
+	//Transfer closedAccount funds to new accounts
+	dstAccount.acctBalance =  (parseFloat(account.acctBalance) + parseFloat(dstAccount.acctBalance)).toFixed(2) ;
+
+	}
+	
+	customer.accounts.splice(accountIndex - 1, 1);
+	this.viewAccounts(customer);
 }
 
 // ------------------------------------------------------
