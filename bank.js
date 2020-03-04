@@ -360,24 +360,80 @@ Bank.prototype.createAccount = function(customer, acctName, initialDeposits, typ
 Bank.prototype.openAccountUI = function(customer)
 {
 	// The account name
-	var accountName = readline.question("Please choose an account name: ");	
+	let accountName = readline.question("Please choose an account name: ");	
 	
 	// Get the account type
-	var accountType = readline.question("Please choose (1) for savings and (2) for checking: ");
+	let accountType = readline.question("Please choose (1) for savings and (2) for checking: ");
 	
 	// The account type
-	var choosenType = null;
-	
-	// The account type: sacings or checking
-	if(accountType == 1) { choosenType = "savings"; }
-	else { choosenType = "checking"; }
-	
+	let choosenType = null;
+		
+	// Check that the user selects a valid account type option.
+	let accountTypeFlag = null;
+
+	if(!isNaN(accountType) && parseInt(accountType) === 1)
+	{
+		choosenType = "savings";
+	}
+	else if(!isNaN(accountType) && parseInt(accountType) === 2)
+	{
+		choosenType = "checking";
+	}
+	else
+	{
+		accountTypeFlag = true;
+	}
+
+	// Prompt user for valid account type.
+	while(accountTypeFlag)
+	{
+		accountType = readline.question("Please choose a valid account type. (1) for savings or (2) for checking: ");
+		if(!isNaN(accountType) && parseInt(accountType) === 1)
+		{
+			choosenType = "savings";
+			accountTypeFlag = false;
+		}
+		else if(!isNaN(accountType) && parseInt(accountType) === 2)
+		{
+			choosenType = "checking";
+			accountTypeFlag = false;
+		}
+
+	}
+
 	// The initial deposit	
-	var initialDeposit = readline.question("Please enter the deposit amount: ");
+	let initialDeposit = readline.question("Please enter the deposit amount: ");
 	
-	// The account name
-	this.createAccount(customer, accountName, parseFloat(initialDeposit), accountType);
+	// Check that the user input a valid deposit amount.
+	let initialDepositFlag = null;
+
+	if(!isNaN(initialDeposit) && isFinite(initialDeposit) && !(initialDeposit < 0))
+	{
+		initialDepositFlag = false;
+	}
+	else
+	{
+		initialDepositFlag = true;
+	}
+
+	// Prompt user for valid deposit amount.
+	while(initialDepositFlag)
+	{
+		initialDeposit = readline.question("Please enter a valid deposit amount: ");
+		if(!isNaN(initialDeposit) && isFinite(initialDeposit) && !(initialDeposit < 0))
+		{
+			initialDepositFlag = false;
+		}
+		else
+		{
+			initialDepositFlag = true;
+		}
+	}
+
+	// Add the account.
+	this.createAccount(customer, accountName, parseFloat(initialDeposit).toFixed(2), choosenType);
 }
+
 Bank.prototype.closeAccount = function(customer) 
 {
 	this.viewAccounts(customer);
