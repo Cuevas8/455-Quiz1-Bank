@@ -140,7 +140,7 @@ function Bank(name, initCustomerList)
 Bank.prototype.createAndAddCustomer = function(userName, userPassword)
 {
 	// Create a new customer
-	var customer = new Customer(userName, userPassword);	
+	let customer = new Customer(userName, userPassword);	
 	
 	// Save the customer
 	this.customers[customer.getUserName()] = customer;
@@ -152,10 +152,10 @@ Bank.prototype.createAndAddCustomer = function(userName, userPassword)
 Bank.prototype.createCustomerUI = function()
 {
 	// Create user name
-	var userName = readline.question("Please pick a user name: ");
+	let userName = readline.question("Please pick a user name: ");
 	
 	// Pick the password 
-	var userPassword = readline.question("Please pick a user password: ");	
+	let userPassword = readline.question("Please pick a user password: ");	
 	
 	// Create and add user
 	this.createAndAddCustomer(userName, userPassword);
@@ -183,7 +183,7 @@ Bank.prototype.userActionMenuUI = function(customer)
 		console.log("-----------------------------------------------\n\n");
 
 		// Accept input
-		var choice = readline.question("Choice: ");
+		let choice = readline.question("Choice: ");
 		
 		// Decide what to do
 		
@@ -237,10 +237,10 @@ Bank.prototype.userActionMenuUI = function(customer)
 Bank.prototype.viewAccounts = function(customer) 
 {
 	// Get the accounts
-	var accounts = customer.getAccounts();
+	let accounts = customer.getAccounts();
 	
 	// The account counter
-	var accountNum = 1;
+	let accountNum = 1;
 		
 	// Print the accounts
 	for(account of accounts)
@@ -265,7 +265,7 @@ Bank.prototype.masterChoice = function()
 		console.log("2. Create Account\n");
 		
 		// Get the choice
-		var choice = readline.question("Choice: ");	
+		let choice = readline.question("Choice: ");	
 		
 
 		// Login
@@ -289,19 +289,19 @@ Bank.prototype.loginUI = function()
 		console.log("Please enter your user name and password");
 	
 		// Get the user name
-		var userName = readline.question("Username: ");
+		let userName = readline.question("Username: ");
 
 		// Get the password	
-		var userPassword = readline.question("Password: ");
+		let userPassword = readline.question("Password: ");
 			
 		// Whether there was a match
-		var match = this.login(userName, userPassword);
+		let match = this.login(userName, userPassword);
 	
 	} while(!match);
 	
 	
 	// Get the customer
-	var customer = this.getCustomer(userName);
+	let customer = this.getCustomer(userName);
 	
 	// Show the user menu
 	this.userActionMenuUI(customer);
@@ -316,13 +316,13 @@ Bank.prototype.loginUI = function()
 Bank.prototype.login = function(userName, userPassword)
 {		
 	// The match
-	var match = false;
+	let match = false;
 	
 	// Is this a registered user?
 	if(userName in this.customers)
 	{
 		// Get the customer
-		var customer = this.customers[userName];
+		let customer = this.customers[userName];
 		
 		// Check the password
 		if(customer.getPassword() == userPassword) { match = true; }
@@ -345,7 +345,7 @@ Bank.prototype.login = function(userName, userPassword)
 Bank.prototype.createAccount = function(customer, acctName, initialDeposits, type)
 {
 	// Create a new account
-	var account = new Account(acctName, initialDeposits, type);
+	let account = new Account(acctName, initialDeposits, type);
 	
 	// Add account to the user
 	customer.addAccount(account);
@@ -371,11 +371,11 @@ Bank.prototype.openAccountUI = function(customer)
 	// Check that the user selects a valid account type option.
 	let accountTypeFlag = null;
 
-	if(!isNaN(accountType) && parseInt(accountType) === 1)
+	if(Number.isInteger(accountType) && parseInt(accountType) === 1)
 	{
 		choosenType = "savings";
 	}
-	else if(!isNaN(accountType) && parseInt(accountType) === 2)
+	else if(Number.isInteger(accountType) && parseInt(accountType) === 2)
 	{
 		choosenType = "checking";
 	}
@@ -388,12 +388,12 @@ Bank.prototype.openAccountUI = function(customer)
 	while(accountTypeFlag)
 	{
 		accountType = readline.question("Please choose a valid account type. (1) for savings or (2) for checking: ");
-		if(!isNaN(accountType) && parseInt(accountType) === 1)
+		if(Number.isInteger(accountType) && parseInt(accountType) === 1)
 		{
 			choosenType = "savings";
 			accountTypeFlag = false;
 		}
-		else if(!isNaN(accountType) && parseInt(accountType) === 2)
+		else if(Number.isInteger(accountType) && parseInt(accountType) === 2)
 		{
 			choosenType = "checking";
 			accountTypeFlag = false;
@@ -442,7 +442,7 @@ Bank.prototype.closeAccount = function(customer)
 	}
 
 	// Get the account choice to close
-	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
+	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
 	
 	while(accountIndex.match(/[a-z]/i) ||isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
 		console.log("Please input a valid account number");
@@ -450,7 +450,7 @@ Bank.prototype.closeAccount = function(customer)
 	}
 
 	// Get the account based on index
-	var account = customer.getAccount(accountIndex - 1);
+	let account = customer.getAccount(accountIndex - 1);
 
 
 	if(customer.accounts.length > 1) {
@@ -458,7 +458,7 @@ Bank.prototype.closeAccount = function(customer)
 	accountIndex2 = readline.question("Please select which account to transfer the remaining funds (e.g., enter 1 for the first account) ");
 	
 	// Get the destination account based on index
-	var dstAccount = customer.getAccount(accountIndex2 - 1);	
+	let dstAccount = customer.getAccount(accountIndex2 - 1);	
 	
 	
 	//Transfer closedAccount funds to new accounts
@@ -520,7 +520,7 @@ Bank.prototype.withdrawUI = function(customer)
 	this.viewAccounts(customer);
 	
 	// Get the account choice
-	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	
 	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
 		console.log("Please input a valid account number");
@@ -528,10 +528,10 @@ Bank.prototype.withdrawUI = function(customer)
 	}
 
 	// Get the account based on index
-	var account = customer.getAccount(accountIndex - 1);	
+	let account = customer.getAccount(accountIndex - 1);	
 	
 	// Get the withdraw amount
-	var withdrawAmount = readline.question("Please enter the withraw amount: ");
+	let withdrawAmount = readline.question("Please enter the withraw amount: ");
 
 	while(withdrawAmount.match(/[a-z]/i) || isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
 		console.log("Please enter valid withdraw amount.");
@@ -560,7 +560,7 @@ Bank.prototype.transferUI = function(customer)
 	this.viewAccounts(customer);
 		
 	// Get the source account
-	var accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
+	let accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
 
 	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
 		console.log("Please input a valid account number");
@@ -568,16 +568,16 @@ Bank.prototype.transferUI = function(customer)
 	}
 	
 	// Get the destination account based on index
-	var srcAccount = customer.getAccount(accountIndex - 1);
+	let srcAccount = customer.getAccount(accountIndex - 1);
 	
 	// Get the destination account
 	accountIndex = readline.question("Please select the destination by entering a choice (e.g., enter 1 for the first account) ");
 	
 	// Get the destination account based on index
-	var dstAccount = customer.getAccount(accountIndex - 1);		
+	let dstAccount = customer.getAccount(accountIndex - 1);		
 	
 	// Get the transfer amount
-	var transferAmount = readline.question("Please enter the transfer amount: ");
+	let transferAmount = readline.question("Please enter the transfer amount: ");
 
 	while(transferAmount.match(/[a-z]/i) || isNaN(parseFloat(transferAmount)) || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
 		console.log("Please enter valid withdraw amount.");
@@ -604,12 +604,12 @@ Bank.prototype.transferUI = function(customer)
 Bank.prototype.showAccounts = function(user)
 {
 	// Get the accounts
-	var accounts = user.getAccounts();
+	let accounts = user.getAccounts();
 	
 	console.log(accounts);
 		
 	// The account number
-	var acctNum = 0;
+	let acctNum = 0;
 	
 	// Print all the accounts
 	for(account of accounts)
@@ -645,9 +645,9 @@ Bank.prototype.start = function()
 // ---- Sample Test Code --------
 
 // Create three customers
-var c1 = new Customer("mike", "123");
-var c2 = new Customer("pike", "234");
-var c3 = new Customer("bike", "678");
+let c1 = new Customer("mike", "123");
+let c2 = new Customer("pike", "234");
+let c3 = new Customer("bike", "678");
 
 // Add accounts to each customer
 c1.addAccount(new Account("bills", 100, "savings"));
@@ -660,10 +660,10 @@ c3.addAccount(new Account("chills", 300, "savings"));
 c3.addAccount(new Account("thrills", 400, "checking"));
 
 // Create a list of customers
-var customers = [c1, c2, c3];
+let customers = [c1, c2, c3];
 
 // Create a bank object
-var myBank = new Bank("Kitty Bank", customers);
+let myBank = new Bank("Kitty Bank", customers);
 
 
 myBank.start();
