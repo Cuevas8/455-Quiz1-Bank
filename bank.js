@@ -483,29 +483,29 @@ Bank.prototype.depositUI = function(user)
 	this.viewAccounts(user);
 	
 	// Get the account choice
-	var accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
+	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
+
+	// Check if the accountIndex the user selected is valid.
 	
-	while(accountIndex.match(/[a-z]/i) ||isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (user.accounts.length)) { //CHANGE OVER HERE
-		console.log("Please input a valid account number");
-		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	while(accountIndex.match(/[a-z]/i) || isNaN(accountIndex) || Number.isInteger(accountIndex) || accountIndex <= 0 || accountIndex > (user.accounts.length))
+	{
+		accountIndex = readline.question("Please select a valid account by entering a choice (e.g., enter 1 for the first account): ");
 	}
 
 	// Get the account based on index
-	var account = user.getAccount(accountIndex - 1);
-	
+	let account = user.getAccount(accountIndex - 1);
 	
 	// Get the deposit amount
-	var depositAmount = readline.question("Please enter the deposit amount: ");
+	let depositAmount = readline.question("Please enter the deposit amount: ");
 
-
-	while( depositAmount.match(/[a-z]/i) || isNaN(parseFloat(depositAmount)) || parseFloat(depositAmount) <= 0) { //CHANGE OVER HERE
-		console.log("Please enter valid deposit amount.");
-		depositAmount = readline.question("Please enter the deposit amount: ");
+	// Check if the deposit amount the user entered is valid.
+	while(depositAmount.match(/[a-z]/i) || isNaN(depositAmount) || parseFloat(depositAmount) <= 0 || !isFinite(depositAmount))
+	{
+		depositAmount = readline.question("Please enter a valid amount to deposit: ");
 	}
 
-	// Deposit the money	
-	account.deposit(depositAmount);			
-	
+	// Deposit the money
+	account.deposit(parseFloat(depositAmount).toFixed(2));			
 	
 	console.log("Updated account information: ");
 	account.printAcct();		
