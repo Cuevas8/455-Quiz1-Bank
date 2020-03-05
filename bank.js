@@ -268,14 +268,20 @@ Bank.prototype.masterChoice = function()
 	do
 	{
 		// Login
-		if(choice === 1)	
+		if(isNaN(choice) === false && parseFloat(choice) === 1)
+		{
 			this.loginUI();
+		}
 		// Create new user account
-		else if (choice === 2)
+		else if(isNaN(choice) === false && parseFloat(choice) === 2)
+		{
 			this.createCustomerUI();
+		}
 		// Will prompt the user if they did not select either option.
 		else
+		{
 			choice = readline.question("\nPlease enter a valid choice.\n1. Login\n2. Create Account\n\nChoice: ");
+		}
 	}while(choice !== 1 && choice !== 2);
 }
 
