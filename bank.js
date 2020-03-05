@@ -258,25 +258,25 @@ Bank.prototype.viewAccounts = function(customer)
 // ------------------------------------------------------------
 Bank.prototype.masterChoice = function()
 {
+	console.log("What would you like to do?");
+	console.log("1. Login");
+	console.log("2. Create Account\n");
+	
+	// Get the choice
+	let choice = readline.question("Choice: ");	
+	
 	do
 	{
-		console.log("What would you like to do?");
-		console.log("1. Login");
-		console.log("2. Create Account\n");
-		
-		// Get the choice
-		let choice = readline.question("Choice: ");	
-		
-
 		// Login
-		if(choice == 1)	
+		if(choice === 1)	
 			this.loginUI();
-
 		// Create new user account
-		else if (choice == 2)
+		else if (choice === 2)
 			this.createCustomerUI();
-		
-	}while(choice != 1 && choice != 2);
+		// Will prompt the user if they did not select either option.
+		else
+			choice = readline.question("\nPlease enter a valid choice.\n1. Login\n2. Create Account\n\nChoice: ");
+	}while(choice !== 1 && choice !== 2);
 }
 
 // -------------------------------------------------------------
