@@ -188,7 +188,7 @@ Bank.prototype.userActionMenuUI = function(customer)
 		
 		// Decide what to do
 		// Checks if the user inputs is a valid option.
-		while(isNaN(choice) || !isFinite(choice) || parseFloat(choice) <= 0 || parseFloat(choice) > 7)
+		while(isNaN(choice) || !isFinite(choice) || !Number.isInteger(parseFloat(choice)) || parseInt(choice) <= 0 || parseInt(choice) > 7)
 		{
 			console.log("-----------------------------------------------");
 			console.log("1. Deposit");
@@ -428,65 +428,29 @@ Bank.prototype.openAccountUI = function(customer)
 	let choosenType = null;
 		
 	// Check that the user selects a valid account type option.
-	let accountTypeFlag = null;
+	while(isNaN(accountType) || !isFinite(accountType) || !Number.isInteger(parseFloat(accountType)) || parseInt(accountType) < 1 || parseInt(accountType) > 2)
+	{
+		console.log("Please enter a valid account type.")
+		accountType = readline.question("Please choose (1) for savings and (2) for checking: ");
+	}
 
-	if(Number.isInteger(accountType) && parseInt(accountType) === 1)
+	// Selects chosen account type.
+	if(parseInt(accountType) === 1)
 	{
 		choosenType = "savings";
 	}
-	else if(Number.isInteger(accountType) && parseInt(accountType) === 2)
-	{
-		choosenType = "checking";
-	}
 	else
 	{
-		accountTypeFlag = true;
-	}
-
-	// Prompt user for valid account type.
-	while(accountTypeFlag)
-	{
-		accountType = readline.question("Please choose a valid account type. (1) for savings or (2) for checking: ");
-		if(Number.isInteger(accountType) && parseInt(accountType) === 1)
-		{
-			choosenType = "savings";
-			accountTypeFlag = false;
-		}
-		else if(Number.isInteger(accountType) && parseInt(accountType) === 2)
-		{
-			choosenType = "checking";
-			accountTypeFlag = false;
-		}
-
+		choosenType = "checking";
 	}
 
 	// The initial deposit	
 	let initialDeposit = readline.question("Please enter the deposit amount: ");
 	
 	// Check that the user input a valid deposit amount.
-	let initialDepositFlag = null;
-
-	if(!isNaN(initialDeposit) && isFinite(initialDeposit) && !(initialDeposit < 0))
-	{
-		initialDepositFlag = false;
-	}
-	else
-	{
-		initialDepositFlag = true;
-	}
-
-	// Prompt user for valid deposit amount.
-	while(initialDepositFlag)
+	while(isNaN(initialDeposit) || !isFinite(initialDeposit) || parseFloat(initialDeposit).toFixed(2) <= 0)
 	{
 		initialDeposit = readline.question("Please enter a valid deposit amount: ");
-		if(!isNaN(initialDeposit) && isFinite(initialDeposit) && !(initialDeposit < 0))
-		{
-			initialDepositFlag = false;
-		}
-		else
-		{
-			initialDepositFlag = true;
-		}
 	}
 
 	// Add the account.
