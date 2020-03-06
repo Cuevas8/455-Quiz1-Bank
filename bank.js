@@ -523,7 +523,7 @@ Bank.prototype.depositUI = function(user)
 
 	// Check if the accountIndex the user selected is valid.
 	
-	while(accountIndex.match(/[a-z]/i) || isNaN(accountIndex) || Number.isInteger(accountIndex) || accountIndex <= 0 || accountIndex > (user.accounts.length))
+	while(accountIndex.match(/[a-z]/i) || isNaN(accountIndex) || !Number.isInteger(parseFloat(accountIndex)) || parseInt(accountIndex) <= 0 || parseInt(accountIndex) > (user.accounts.length))
 	{
 		accountIndex = readline.question("Please select a valid account by entering a choice (e.g., enter 1 for the first account): ");
 	}
@@ -535,7 +535,7 @@ Bank.prototype.depositUI = function(user)
 	let depositAmount = readline.question("Please enter the deposit amount: ");
 
 	// Check if the deposit amount the user entered is valid.
-	while(depositAmount.match(/[a-z]/i) || isNaN(depositAmount) || parseFloat(depositAmount) <= 0 || !isFinite(depositAmount))
+	while(depositAmount.match(/[a-z]/i) || isNaN(depositAmount) || !isFinite(depositAmount) || parseFloat(depositAmount).toFixed(2) <= 0)
 	{
 		depositAmount = readline.question("Please enter a valid amount to deposit: ");
 	}
