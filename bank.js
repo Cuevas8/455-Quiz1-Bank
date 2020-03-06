@@ -245,8 +245,15 @@ Bank.prototype.userActionMenuUI = function(customer)
 		// View accounts
 		else if(parseInt(choice) === 4)
 		{
-			console.log("View Accounts");
-			this.viewAccounts(customer);
+			if(customer.accounts.length < 1)
+			{
+				console.log("You do not have any accounts to view.\n");
+			}
+			else
+			{
+				console.log("View Accounts");
+				this.viewAccounts(customer);
+			}
 		}
 		// Open new account
 		else if(parseInt(choice) === 5)
@@ -556,11 +563,19 @@ Bank.prototype.withdrawUI = function(customer)
 	this.viewAccounts(customer);
 	
 	// Get the account choice
-	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
 	
-	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
-		console.log("Please input a valid account number");
-		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	while(accountIndex.match(/[a-z]/i) || isNaN(accountIndex)|| !isFinite(accountIndex) || !Number.isInteger(parseFloat(accountIndex)) || parseInt(accountIndex) <= 0 || parseInt(accountIndex) > (customer.accounts.length) || parseFloat(customer.getAccount(accountIndex - 1).acctBalance) === 0)
+	{
+		if(parseFloat(customer.getAccount(accountIndex - 1).acctBalance) === 0)
+		{
+			console.log("This account has no funds to withdraw from.");
+		}
+		else
+		{
+			console.log("Please input a valid account number");
+		}
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
 	}
 
 	// Get the account based on index
@@ -569,7 +584,8 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the withdraw amount
 	let withdrawAmount = readline.question("Please enter the withraw amount: ");
 
-	while(withdrawAmount.match(/[a-z]/i) || isNaN(parseFloat(withdrawAmount)) || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
+	while(withdrawAmount.match(/[a-z]/i) || isNaN(withdrawAmount) || !isFinite(accountIndex) || parseFloat(withdrawAmount).toFixed(2) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance))
+	{
 		console.log("Please enter valid withdraw amount.");
 		withdrawAmount = readline.question("Please enter the withdraw amount: ");
 	}
