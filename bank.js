@@ -169,6 +169,7 @@ Bank.prototype.createCustomerUI = function()
 // -----------------------------------------------
 Bank.prototype.userActionMenuUI = function(customer)
 {
+	let choice = null;
 	do
 	{
 		// Get the user input and create a customer object
@@ -183,49 +184,91 @@ Bank.prototype.userActionMenuUI = function(customer)
 		console.log("-----------------------------------------------\n\n");
 
 		// Accept input
-		let choice = readline.question("Choice: ");
+		choice = readline.question("Choice: ");
 		
 		// Decide what to do
-		
-		// Deposit	
-		if(choice == 1)
+		// Checks if the user inputs is a valid option.
+		while(isNaN(choice) || !isFinite(choice) || parseFloat(choice) <= 0 || parseFloat(choice) > 7)
 		{
-			console.log("Deposit");
-			this.depositUI(customer);
+			console.log("-----------------------------------------------");
+			console.log("1. Deposit");
+			console.log("2. Withdraw");
+			console.log("3. Transfer");
+			console.log("4. View Accounts");
+			console.log("5. Open New Account");
+			console.log("6. Remove Account");
+			console.log("7. Logout");
+			console.log("-----------------------------------------------\n\n");
+			console.log("Please enter a valid choice.\n")
+			choice = readline.question("Choice: ")
+		}
+
+		// Deposit	
+		if(parseInt(choice) === 1)
+		{
+			if(customer.accounts.length < 1)
+			{
+				console.log("You do not have any accounts to deposit in.\n")
+			}
+			else
+			{
+				console.log("Deposit");
+				this.depositUI(customer);
+			}
 		}
 		// Withdraw
-		else if(choice == 2)
+		else if(parseInt(choice) === 2)
 		{
-			console.log("Withdraw");
-			this.withdrawUI(customer);
+			if(customer.accounts.length < 1)
+			{
+				console.log("You do not have any accounts to withdraw from.\n");
+			}
+			else
+			{
+				console.log("Withdraw");
+				this.withdrawUI(customer);
+			}
 		}
 		// Transfer
-		else if(choice == 3)
+		else if(parseInt(choice) === 3)
 		{
-			console.log("Transfer");
-			this.transferUI(customer);
+			if(customer.accounts.length < 2)
+			{
+				console.log("You do not have enough accounts to complete a transfer.\n");
+			}
+			else
+			{
+				console.log("Transfer");
+				this.transferUI(customer);
+			}
 		}
 		// View accounts
-		else if(choice == 4)
+		else if(parseInt(choice) === 4)
 		{
 			console.log("View Accounts");
 			this.viewAccounts(customer);
-			
 		}
 		// Open new account
-		else if(choice == 5)
+		else if(parseInt(choice) === 5)
 		{
 			console.log("Open New Account");
 			this.openAccountUI(customer);
 		}
 		// Close customer account
-		else if(choice == 6)
+		else if(parseInt(choice) === 6)
 		{
-			console.log("Remove Account");
-			this.closeAccount(customer)
+			if(customer.accounts.length < 1)
+			{
+				console.log("You do not have any accounts to close.\n");
+			}
+			else
+			{
+				console.log("Remove Account");
+				this.closeAccount(customer);
+			}			
 		}
 	}
-	while(choice != 7);
+	while(parseInt(choice) !== 7);
 }
 
 
@@ -268,12 +311,12 @@ Bank.prototype.masterChoice = function()
 	do
 	{
 		// Login
-		if(isNaN(choice) === false && parseFloat(choice) === 1)
+		if(!isNaN(choice) && parseFloat(choice) === 1)
 		{
 			this.loginUI();
 		}
 		// Create new user account
-		else if(isNaN(choice) === false && parseFloat(choice) === 2)
+		else if(!isNaN(choice) && parseFloat(choice) === 2)
 		{
 			this.createCustomerUI();
 		}
@@ -282,7 +325,7 @@ Bank.prototype.masterChoice = function()
 		{
 			choice = readline.question("\nPlease enter a valid choice.\n1. Login\n2. Create Account\n\nChoice: ");
 		}
-	}while(choice !== 1 && choice !== 2);
+	}while(!isNaN(choice) && parseFloat(choice) !== 1 && parseFloat(choice) !== 2);
 }
 
 // -------------------------------------------------------------
@@ -290,18 +333,28 @@ Bank.prototype.masterChoice = function()
 // -------------------------------------------------------------
 Bank.prototype.loginUI = function()
 {
+	let match = null;
+	let userName = null;
+	let userPassword = null;
+
 	do
 	{
+		// Lets the user know that the credentials didn't work.
+		if(match === false)
+		{
+			console.log("Invalid credentials!\n\n")
+		}
+
 		console.log("Please enter your user name and password");
 	
 		// Get the user name
-		let userName = readline.question("Username: ");
+		userName = readline.question("Username: ");
 
 		// Get the password	
-		let userPassword = readline.question("Password: ");
+		userPassword = readline.question("Password: ");
 			
 		// Whether there was a match
-		let match = this.login(userName, userPassword);
+		match = this.login(userName, userPassword);
 	
 	} while(!match);
 	
@@ -331,7 +384,7 @@ Bank.prototype.login = function(userName, userPassword)
 		let customer = this.customers[userName];
 		
 		// Check the password
-		if(customer.getPassword() == userPassword) { match = true; }
+		if(customer.getPassword() === userPassword) { match = true; }
 	}
 	
 	return match;
