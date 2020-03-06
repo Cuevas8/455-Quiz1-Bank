@@ -465,11 +465,12 @@ Bank.prototype.closeAccount = function(customer)
 	}
 
 	// Get the account choice to close
-	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account)");
+	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
 	
-	while(accountIndex.match(/[a-z]/i) ||isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
-		console.log("Please input a valid account number");
-		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	while(isNaN(accountIndex) || !isFinite(accountIndex) || !Number.isInteger(parseFloat(accountIndex)) || parseInt(accountIndex) <= 0 || parseInt(accountIndex) > (customer.accounts.length))
+	{
+		console.log("Please input a valid account number.");
+		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
 	}
 
 	// Get the account based on index
@@ -478,17 +479,29 @@ Bank.prototype.closeAccount = function(customer)
 
 	if(customer.accounts.length > 1) {
 		// Get the destination account
-	accountIndex2 = readline.question("Please select which account to transfer the remaining funds (e.g., enter 1 for the first account) ");
+		accountIndex2 = readline.question("Please select which account to transfer the remaining funds (e.g., enter 1 for the first account): ");
+		
+		// Check that the user input a valid account and not the same account they're trying to remove.
+		while(isNaN(accountIndex2) || !isFinite(accountIndex2) || !Number.isInteger(parseFloat(accountIndex2)) || parseInt(accountIndex2) <= 0 || parseInt(accountIndex) === parseInt(accountIndex2) || parseInt(accountIndex2) > (customer.accounts.length))
+		{
+			if(parseInt(accountIndex2) === parseInt(accountIndex))
+			{
+				console.log("\n\nYou have selected the same account that you are trying to remove...");
+			}
+			console.log("Please input a valid account number.");
+			accountIndex2 = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
+		}
+
+		// Get the destination account based on index
+		let dstAccount = customer.getAccount(accountIndex2 - 1);	
 	
-	// Get the destination account based on index
-	let dstAccount = customer.getAccount(accountIndex2 - 1);	
 	
-	
-	//Transfer closedAccount funds to new accounts
-	dstAccount.acctBalance =  (parseFloat(account.acctBalance) + parseFloat(dstAccount.acctBalance)).toFixed(2) ;
+		//Transfer closedAccount funds to new accounts
+		dstAccount.acctBalance =  (parseFloat(account.acctBalance) + parseFloat(dstAccount.acctBalance)).toFixed(2) ;
 
 	}
 	
+	// Removes selected account from list of accounts.
 	customer.accounts.splice(accountIndex - 1, 1);
 	this.viewAccounts(customer);
 }
