@@ -44,13 +44,12 @@ Account.prototype.getAccountType = function() { return this.type; }
 
 // Deposits money to the account
 // @param amount - the amount to deposit
-Account.prototype.deposit = function(amount) {this.acctBalance  = parseFloat( parseFloat(this.acctBalance) +  parseFloat(amount)).toFixed(2); } //CHECK OVER HERE. Kinda sloppy
+Account.prototype.deposit = function(amount) { this.acctBalance = parseFloat(parseFloat(this.acctBalance) + parseFloat(amount)).toFixed(2); }
 	
 
 // Withdraws money from the account
 // @param amount - the amount to withdraw
-
-Account.prototype.withdraw = function(amount){ this.acctBalance  = parseFloat( parseFloat(this.acctBalance) -  parseFloat(amount)).toFixed(2); } //CHECK OVER HERE. Kinda sloppy
+Account.prototype.withdraw = function(amount) { this.acctBalance = parseFloat(parseFloat(this.acctBalance) - parseFloat(amount)).toFixed(2); }
 
 // Prints the account information
 Account.prototype.printAcct = function()
@@ -72,7 +71,7 @@ function Customer(userName, userPassword)
 	this.userPassword = userPassword;
 		
 	// The list of accounts	
-	this.accounts = []	
+	this.accounts = [];
 }
 
 // PROTOTYPE FUNCTIONS FOR CUSTOMER OBJECT
@@ -491,7 +490,7 @@ Bank.prototype.closeAccount = function(customer)
 		// Check that the user input a valid account and not the same account they're trying to remove.
 		while(isNaN(accountIndex2) || !isFinite(accountIndex2) || !Number.isInteger(parseFloat(accountIndex2)) || parseInt(accountIndex2) <= 0 || parseInt(accountIndex) === parseInt(accountIndex2) || parseInt(accountIndex2) > (customer.accounts.length))
 		{
-			if(parseInt(accountIndex2) === parseInt(accountIndex))
+			if(Number.isInteger(parseFloat(accountIndex2)) && parseInt(accountIndex2) === parseInt(accountIndex))
 			{
 				console.log("\n\nYou have selected the same account that you are trying to remove...");
 			}
@@ -565,6 +564,7 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the account choice
 	let accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account): ");
 	
+	// Check if the user account is a valid option or if the account they're trying to withdraw from has any funds.
 	while(accountIndex.match(/[a-z]/i) || isNaN(accountIndex)|| !isFinite(accountIndex) || !Number.isInteger(parseFloat(accountIndex)) || parseInt(accountIndex) <= 0 || parseInt(accountIndex) > (customer.accounts.length) || parseFloat(customer.getAccount(accountIndex - 1).acctBalance) === 0)
 	{
 		if(parseFloat(customer.getAccount(accountIndex - 1).acctBalance) === 0)
@@ -584,7 +584,7 @@ Bank.prototype.withdrawUI = function(customer)
 	// Get the withdraw amount
 	let withdrawAmount = readline.question("Please enter the withraw amount: ");
 
-	while(withdrawAmount.match(/[a-z]/i) || isNaN(withdrawAmount) || !isFinite(accountIndex) || parseFloat(withdrawAmount).toFixed(2) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance))
+	while(withdrawAmount.match(/[a-z]/i) || isNaN(withdrawAmount) || !isFinite(withdrawAmount) || parseFloat(withdrawAmount).toFixed(2) <= 0 || parseFloat(withdrawAmount) > parseFloat(account.acctBalance))
 	{
 		console.log("Please enter valid withdraw amount.");
 		withdrawAmount = readline.question("Please enter the withdraw amount: ");
@@ -614,7 +614,9 @@ Bank.prototype.transferUI = function(customer)
 	// Get the source account
 	let accountIndex = readline.question("Please select the source account by entering a choice (e.g., enter 1 for the first account) ");
 
-	while(accountIndex.match(/[a-z]/i) || isNaN(parseInt(accountIndex))|| parseInt(accountIndex) < 0 || parseInt(accountIndex) > (customer.accounts.length)) { //CHANGE OVER HERE
+	// Checks that the source is a valid account.
+	while(isNaN(accountIndex) || !isFinite(accountIndex) || !Number.isInteger(parseFloat(accountIndex)) || parseInt(accountIndex) <= 0 || parseInt(accountIndex) > (customer.accounts.length))
+	{
 		console.log("Please input a valid account number");
 		accountIndex = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
 	}
@@ -623,15 +625,29 @@ Bank.prototype.transferUI = function(customer)
 	let srcAccount = customer.getAccount(accountIndex - 1);
 	
 	// Get the destination account
-	accountIndex = readline.question("Please select the destination by entering a choice (e.g., enter 1 for the first account) ");
-	
+	let accountIndex2 = readline.question("Please select the destination by entering a choice (e.g., enter 1 for the first account) ");
+
+	// Checks that the destination account is valid and not the same as the source.
+	while(isNaN(accountIndex2) || !isFinite(accountIndex2) || !Number.isInteger(parseFloat(accountIndex2)) || parseInt(accountIndex2) <= 0 || parseInt(accountIndex2) > (customer.accounts.length) || parseInt(accountIndex) === parseInt(accountIndex2))
+	{
+		if(Number.isInteger(parseFloat(accountIndex2)) && parseInt(accountIndex) === parseInt(accountIndex2))
+		{
+			console.log("You are trying to transfer money to the same account...\n\n");
+		}
+		
+		console.log("Please input a valid account number");
+		accountIndex2 = readline.question("Please select an account by entering a choice (e.g., enter 1 for the first account) ");
+	}
+
 	// Get the destination account based on index
-	let dstAccount = customer.getAccount(accountIndex - 1);		
+	let dstAccount = customer.getAccount(accountIndex2 - 1);		
 	
 	// Get the transfer amount
 	let transferAmount = readline.question("Please enter the transfer amount: ");
 
-	while(transferAmount.match(/[a-z]/i) || isNaN(parseFloat(transferAmount)) || parseFloat(transferAmount) <= 0 || parseFloat(transferAmount) > parseFloat(account.acctBalance) ) { //CHANGE OVER HERE
+	// Checks that the transfer amount is valid.	
+	while(isNaN(transferAmount) || !isFinite(transferAmount) || parseFloat(transferAmount).toFixed(2) <= 0 || parseFloat(transferAmount) > parseFloat(srcAccount.acctBalance))
+	{
 		console.log("Please enter valid withdraw amount.");
 		transferAmount = readline.question("Please enter the withdraw amount: ");
 	}
